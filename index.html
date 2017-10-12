@@ -2,8 +2,10 @@
 <html>
 <head>
 	<title>game</title>
-	<link rel="stylesheet" type="text/css" href="bootstrap.css">
-	<script type="text/javascript" src="game.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/game.js"></script>
 </head>
  
 <body onload="startGame()">
@@ -11,10 +13,10 @@
 <div id="myrestartbutton" style="position:absolute;padding-top:75px;padding-left:120px;display:none;"><button onclick="restartGame()">Restart</button></div>
 <div id="canvascontainer"></div>
 <div style="text-align:center;width:320px;">
-  <button ontouchstart="moveup()" onmousedown="moveup()" onmouseup="clearmove()" class="btn btn-primary">UP</button><br><br>
-  <button ontouchstart="moveleft()" onmousedown="moveleft()" onmouseup="clearmove()">LEFT</button>
-  <button ontouchstart="moveright()" onmousedown="moveright()" onmouseup="clearmove()">RIGHT</button><br><br>
-  <button ontouchstart="movedown()" onmousedown="movedown()" onmouseup="clearmove()">DOWN</button>
+  <button ontouchstart="moveup()" onmousedown="moveup()" onmouseup="clearmove()" class="btn btn-primary btn-sm"><i class="fa fa-arrow-up"></i></button><br><br>
+  <button ontouchstart="moveleft()" onmousedown="moveleft()" onmouseup="clearmove()" class="btn btn-danger btn-sm"><i class="fa fa-arrow-left"></i></button>
+  <button ontouchstart="moveright()" onmousedown="moveright()" onmouseup="clearmove()" class="btn btn-danger btn-sm"><i class="fa fa-arrow-right"></i></button><br><br>
+  <button ontouchstart="movedown()" onmousedown="movedown()" onmouseup="clearmove()" class="btn btn-primary btn-sm"><i class="fa fa-arrow-down"></i></button>
 </div>
 <br>
 </body>

@@ -4,8 +4,7 @@ var myGameArea;
 var myGamePiece;
 var myObstacles = [];
 var myscore;
-var mySound;
-var myMusic;
+ 
 
 
 function restartGame() {
@@ -21,23 +20,21 @@ function restartGame() {
     // document.getElementById("canvascontainer").innerHTML = "";
     // startGame();
 }
-
 function startGame() {
     myGameArea = new gamearea();
     myGamePiece = new component(30, 30, "red", 10, 75);
     myscore = new component("15px", "Consolas", "black", 220, 25, "text");
-    mySound = new sound("bounce.mp3");
-    myMusic = new sound("gametheme.mp3");
-    myMusic.play();
+     
+    
     myGameArea.start();
 }
 
 function gamearea() {
     this.canvas = document.createElement("canvas");
     this.canvas.width = 320;
-    this.canvas.height = 180;    
+    this.canvas.height = 180; 
     document.getElementById("canvascontainer").appendChild(this.canvas);
-    this.context = this.canvas.getContext("2d");
+    this.context = this.canvas.getContext("2d");    
     this.pause = false;
     this.frameNo = 0;
     this.start = function() {
@@ -96,7 +93,7 @@ function updateGameArea() {
     var x, y, min, max, height, gap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
-            mySound.play();
+           
             myGameArea.stop();
             document.getElementById("myfilter").style.display = "block";
             document.getElementById("myrestartbutton").style.display = "block";
@@ -175,6 +172,46 @@ function clearmove(e) {
     myGamePiece.speedX = 0; 
     myGamePiece.speedY = 0; 
 }
+$(document).keydown(function(e){
+     
+    if (e.keyCode == 37) { 
+     moveleft(e) 
+       return false;
+    }
+    if (e.keyCode == 38) { 
+     moveup(e) 
+       return false;
+    }
+    if (e.keyCode == 39) { 
+     moveright(e) 
+       return false;
+    }
+    if (e.keyCode == 40) { 
+     movedown(e) 
+       return false;
+    }
+    
+});
+$(document).keyup(function(e){
+     
+    if (e.keyCode == 37) { 
+     clearmove(e) 
+       return false;
+    }
+    if (e.keyCode == 38) { 
+     clearmove(e) 
+       return false;
+    }
+    if (e.keyCode == 39) { 
+     clearmove(e) 
+       return false;
+    }
+    if (e.keyCode == 40) { 
+     clearmove(e) 
+       return false;
+    }
+    
+});
 startGame();
 
-
+ 
