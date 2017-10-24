@@ -4,49 +4,53 @@ var myGameArea;
 var myGamePiece;
 var myObstacles = [];
 var myscore;
- 
+var levels = [200,500,1000,3000,7000,10000]; 
 
 
 function restartGame() {
-    location.reload()
-    // document.getElementById("myfilter").style.display = "none";
-    // document.getElementById("myrestartbutton").style.display = "none";
-    // myGameArea.stop();
-    // myGameArea.clear();
-    // myGameArea = {};
-    // myGamePiece = {};
-    // myObstacles = [];
-    // myscore = {};
-    // document.getElementById("canvascontainer").innerHTML = "";
-    // startGame();
+    //location.reload()
+     document.getElementById("myfilter").style.display = "none";
+     document.getElementById("myrestartbutton").style.display = "none";
+     myGameArea.stop();
+     myGameArea.clear();
+     myGameArea = {};
+     myGamePiece = {};
+     myObstacles = [];
+     myscore = {};
+     document.getElementById("canvascontainer").innerHTML = "";
+     startGame();
 }
 function startGame() {
     myGameArea = new gamearea();
     myGamePiece = new component(30, 30, "red", 10, 75);
-    myscore = new component("15px", "Consolas", "black", 220, 25, "text");
-     
-    
+    myscore = new component("15px", "Consolas", "black", 220, 25, "text");         
     myGameArea.start();
 }
 
 function gamearea() {
+
+	this.refreshSpeed = 35; 
     this.canvas = document.createElement("canvas");
+	this.stopped = true; 
     this.canvas.width = 320;
     this.canvas.height = 180; 
+	if( document.getElementById("canvascontainer"))
     document.getElementById("canvascontainer").appendChild(this.canvas);
     this.context = this.canvas.getContext("2d");    
     this.pause = false;
     this.frameNo = 0;
     this.start = function() {
-        this.interval = setInterval(updateGameArea, 20);
+		this.stopped = false;
+        updateGameArea()
     }
     this.stop = function() {
-        clearInterval(this.interval);
         this.pause = true;
+		this.stopped = true;
     }
     this.clear = function(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+	//this.stop(); 
 }
 
 function component(width, height, color, x, y, type) {
@@ -90,6 +94,7 @@ function component(width, height, color, x, y, type) {
 }
 
 function updateGameArea() {
+	if (myGameArea.stopped){ return; }
     var x, y, min, max, height, gap;
     for (i = 0; i < myObstacles.length; i += 1) {
         if (myGamePiece.crashWith(myObstacles[i])) {
@@ -121,29 +126,21 @@ function updateGameArea() {
             myObstacles[i].update();
         }
         myscore.text="SCORE: " + myscore.score;
-             
-        if (myscore.score == 1000){
-
-                myGameArea.interval = setInterval(updateGameArea, 30);
-                
-        }
-        else if (myscore.score == 3000){
-
-                myGameArea.interval = setInterval(updateGameArea, 25);
-                
-        }
-        else if (myscore.score == 5000){
-
-                myGameArea.interval = setInterval(updateGameArea, 20);
-                
-        }
         
-        else{
-            myscore.update();
-            myGamePiece.x += myGamePiece.speedX;
-            myGamePiece.y += myGamePiece.speedY;    
-            myGamePiece.update();
+        if ( levels.indexOf(myscore.score) != -1){
+                myGameArea.refreshSpeed -= 5 ;
+				console.log( 'level '+levels.indexOf(myscore.score) + '; refreshRate: '+ myGameArea.refreshSpeed);
+                
         }
+
+         myscore.update();
+         myGamePiece.x += myGamePiece.speedX;
+         myGamePiece.y += myGamePiece.speedY;    
+         myGamePiece.update();
+
+		 setTimeout(updateGameArea, myGameArea.refreshSpeed);			 
+		 
+
     }
 }
 
@@ -161,7 +158,7 @@ function movedown() {
 }
 
 function moveleft() {
-    myGamePiece.speedX = -1; 
+    myGamePiece.speedX = -1.5; 
 }
 
 function moveright() {
@@ -173,45 +170,23 @@ function clearmove(e) {
     myGamePiece.speedY = 0; 
 }
 $(document).keydown(function(e){
-     
-    if (e.keyCode == 37) { 
-     moveleft(e) 
-       return false;
-    }
-    if (e.keyCode == 38) { 
-     moveup(e) 
-       return false;
-    }
-    if (e.keyCode == 39) { 
-     moveright(e) 
-       return false;
-    }
-    if (e.keyCode == 40) { 
-     movedown(e) 
-       return false;
-    }
-    
+     switch(e.keyCode){
+		 case 37: moveleft(e); break;
+		 case 38: moveup(e); break;
+		 case 39: moveright(e); break;
+		 case 40: movedown(e); break;
+	 }
+     return false;
 });
 $(document).keyup(function(e){
      
-    if (e.keyCode == 37) { 
-     clearmove(e) 
+  switch(e.keyCode){
+		 case 37: 
+		 case 38:
+		 case 39:
+		 case 40:  clearmove(e); break;
+	 }
        return false;
-    }
-    if (e.keyCode == 38) { 
-     clearmove(e) 
-       return false;
-    }
-    if (e.keyCode == 39) { 
-     clearmove(e) 
-       return false;
-    }
-    if (e.keyCode == 40) { 
-     clearmove(e) 
-       return false;
-    }
     
 });
-startGame();
-
- 
+//startGame(); 

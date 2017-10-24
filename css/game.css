@@ -1,0 +1,8 @@
+#canvascontainer{
+	border:1px solid #ccc;
+	
+}
+
+#canvascontainer canvas{
+	background-color:#feceff;
+}
